@@ -18,6 +18,7 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'phone',
+        'role', // <-- role əlavə olundu
     ];
 
     protected $hidden = [
@@ -42,5 +43,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function isAdmin(): bool
+    {
+        return ($this->role === 'admin');
     }
 }

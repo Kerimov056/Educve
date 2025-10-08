@@ -59,6 +59,14 @@
             </span>
           @endguest
 
+                            @auth
+  @if(auth()->user()->isAdmin())
+    <a href="{{ route('admin.dashboard') }}" class="td_btn td_style_1 td_medium">
+      <span class="td_btn_in td_white_color td_accent_bg"><span>Admin</span></span>
+    </a>
+  @endif
+@endauth
+
           @auth
             <div class="d-inline-flex align-items-center gap-3">
               <span class="td_medium">{{ Auth::user()->name }}</span>

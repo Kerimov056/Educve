@@ -79,6 +79,14 @@
                   @endguest
 
                   @auth
+  @if(auth()->user()->isAdmin())
+    <a href="{{ route('admin.dashboard') }}" class="td_btn td_style_1 td_medium">
+      <span class="td_btn_in td_white_color td_accent_bg"><span>Admin</span></span>
+    </a>
+  @endif
+@endauth
+
+                  @auth
                     <li class="menu-item-has-children">
                       <a href="#">{{ Auth::user()->name }}</a>
                       <ul>

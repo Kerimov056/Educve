@@ -3,12 +3,22 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Middleware\EnsureUserIsAdmin;
+
+Route::middleware(['auth', EnsureUserIsAdmin::class]) // << alias deyil, BİRBAŞA SİNİF
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/', [AdminDashboardController::class, 'index'])
+            ->name('dashboard');
+    });
 
 /**
  * AUTH: eyni səhifədə login/register tab
  */
 Route::get('/auth/{tab?}', [AuthController::class, 'show'])
-    ->whereIn('tab', ['login','register'])
+    ->whereIn('tab', ['login', 'register'])
     ->name('auth.show');
 
 Route::post('/login',    [AuthController::class, 'login'])->name('login.post');
@@ -19,8 +29,8 @@ Route::post('/logout',   [AuthController::class, 'webLogout'])->name('logout');
  * Köhnə yolları controller-ə yönləndir (vacib!)
  * (Statik Route::view('/signup'...) OLMAMALIDIR)
  */
-Route::get('/signup', fn() => redirect()->route('auth.show','register'));
-Route::get('/signin', fn() => redirect()->route('auth.show','login'));
+Route::get('/signup', fn() => redirect()->route('auth.show', 'register'));
+Route::get('/signin', fn() => redirect()->route('auth.show', 'login'));
 
 /**
  * Ana səhifə
