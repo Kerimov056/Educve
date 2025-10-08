@@ -6,34 +6,26 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-// JWT üçün bunu əlavə et:
+// JWT
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
 
-    /**
-     * Mass assignable fields
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'phone',
     ];
 
-    /**
-     * Hidden fields
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Casts
-     * Qeyd: Laravel 12-də 'hashed' cast parolu avtomatik hash edir.
-     */
+    // Laravel 10/11/12: 'hashed' cast parolu avtomatik hash edir.
     protected function casts(): array
     {
         return [
@@ -42,7 +34,7 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
-    // === JWTSubject metodları (mütləq) ===
+    // JWT
     public function getJWTIdentifier()
     {
         return $this->getKey();

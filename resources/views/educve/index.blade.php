@@ -33,108 +33,144 @@
     </div>
     <!-- End Preloader -->
     <!-- Start Header Section -->
-    <header class="td_site_header td_style_1 td_type_3 td_sticky_header td_medium td_heading_color">
-      <div class="td_main_header">
-        <div class="container-fluid">
-          <div class="td_main_header_in">
-            <div class="td_main_header_left">
-              <a class="td_site_branding" href="index.html">
-                <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo">
-              </a>
-              <div class="td_header_social_btns">
-                <a href="#" class="td_center">
-                  <i class="fa-brands fa-facebook-f"></i>
+{{-- resources/views/partials/header.blade.php --}}
+<header class="td_site_header td_style_1 td_type_3 td_sticky_header td_medium td_heading_color">
+  <div class="td_main_header">
+    <div class="container-fluid">
+      <div class="td_main_header_in">
+        {{-- Left: Logo + Socials --}}
+        <div class="td_main_header_left">
+          <a class="td_site_branding" href="{{ route('home') }}">
+            <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo">
+          </a>
+          <div class="td_header_social_btns">
+            <a href="#" class="td_center"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="td_center"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="td_center"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="td_center"><i class="fa-brands fa-pinterest-p"></i></a>
+          </div>
+        </div>
+
+        {{-- Center: Nav + center-logo --}}
+        <div class="td_main_header_center">
+          <nav class="td_nav">
+            <div class="td_nav_list_wrap">
+              <div class="td_nav_list_wrap_in">
+                <ul class="td_nav_list">
+                  <li><a href="{{ route('home') }}">Home</a></li>
+                  <li><a href="{{ route('courses-grid-view') }}">Courses</a></li>
+                  <li><a href="{{ route('about') }}">About</a></li>
+                  <li><a href="{{ route('event') }}">Events</a></li>
+                  <li><a href="{{ route('faqs') }}">Faqs</a></li>
+                </ul>
+
+                <a class="td_site_branding" href="{{ route('home') }}">
+                  <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo">
                 </a>
-                <a href="#" class="td_center">
-                  <i class="fa-brands fa-x-twitter"></i>
-                </a>
-                <a href="#" class="td_center">
-                  <i class="fa-brands fa-instagram"></i>
-                </a>
-                <a href="#" class="td_center">
-                  <i class="fa-brands fa-pinterest-p"></i>
-                </a>
-              </div>
-            </div>
-            <div class="td_main_header_center">
-              <nav class="td_nav">
-                <div class="td_nav_list_wrap">
-                  <div class="td_nav_list_wrap_in">
-                    <ul class="td_nav_list">
-                      <li >
-                        <a href="/">Home</a>
-                      </li>
-                      <li >
-                        <a href="courses-grid-view">Courses</a>
-                      </li>
-                      <li><a href="about">About</a></li>
-                       <li >
-                        <a href="event">Events</a>
-                      </li>
 
-                      <li >
-                        <a href="faqs">Faqs</a>
-                      </li>
-                    </ul>
-                    <a class="td_site_branding" href="/">
-                     <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo">
-                    </a>
-                    <ul class="td_nav_list">
-                    
-                      
-                      <li >
-                        <a href="blog">Blogs</a>
-                      </li>
-                      <li><a href="contact">Contact</a></li>
+                <ul class="td_nav_list">
+                  <li><a href="{{ route('blog') }}">Blogs</a></li>
+                  <li><a href="{{ route('contact') }}">Contact</a></li>
 
-                          <li >
-                        <a href="signin">Siginin</a>
-                      </li>
+                  {{-- Auth-aware links on nav (optional; top-right also shows auth controls) --}}
+                  @guest
+                    <li><a href="{{ route('auth.show','login') }}">Signin</a></li>
+                    <li><a href="{{ route('auth.show','register') }}">Signup</a></li>
+                  @endguest
 
-                        <li >
-                        <a href="signup">Siginup</a>
-                      </li>
-
-
-                    </ul>
-                  </div>
-                </div>
-              </nav>
-            </div>
-            <div class="td_main_header_right">
-              <div class="position-relative td_language_wrap">
-                <button class="td_header_dropdown_btn td_medium td_heading_color">
-                  <span>English</span>  
-                        <img src="{{ asset('assets/img/icons/world.svg') }}" alt="" class="td_header_dropdown_btn_icon">   
-
-                </button>
-                <ul class="td_header_dropdown_list td_mp_0">
-                  <li><a href="#">English</a></li>
-                  <li><a href="#">Spanish</a></li>
-                  <li><a href="#">Russian</a></li>
+                  @auth
+                    <li class="menu-item-has-children">
+                      <a href="#">{{ Auth::user()->name }}</a>
+                      <ul>
+                        {{-- Gərək olsa profil/linklər bura --}}
+                        <li>
+                          <form method="POST" action="{{ route('logout') }}" class="px-3 py-2">
+                            @csrf
+                            <button type="submit" class="td_btn td_style_1 td_medium w-100">
+                              <span class="td_btn_in td_white_color td_accent_bg">
+                                <span>Logout</span>
+                              </span>
+                            </button>
+                          </form>
+                        </li>
+                      </ul>
+                    </li>
+                  @endauth
                 </ul>
               </div>
-              <div class="position-relative">
-                <button class="td_circle_btn td_center td_search_tobble_btn" type="button">
-                                              <img src="{{ asset('assets/img/icons/search_2.svg') }}" alt="">       
+            </div>
+          </nav>
+        </div>
+
+        {{-- Right: Language + Search + Auth quick controls + Hamburger --}}
+        <div class="td_main_header_right">
+          <div class="position-relative td_language_wrap">
+            <button class="td_header_dropdown_btn td_medium td_heading_color">
+              <span>English</span>
+              <img src="{{ asset('assets/img/icons/world.svg') }}" alt="" class="td_header_dropdown_btn_icon">
+            </button>
+            <ul class="td_header_dropdown_list td_mp_0">
+              <li><a href="#">English</a></li>
+              <li><a href="#">Spanish</a></li>
+              <li><a href="#">Russian</a></li>
+            </ul>
+          </div>
+
+          <div class="position-relative">
+            <button class="td_circle_btn td_center td_search_tobble_btn" type="button">
+              <img src="{{ asset('assets/img/icons/search_2.svg') }}" alt="">
+            </button>
+            <div class="td_header_search_wrap">
+              <form action="#" class="td_header_search">
+                <input type="text" class="td_header_search_input" placeholder="Search For Anything">
+                <button class="td_header_search_btn td_center">
+                  <img src="{{ asset('assets/img/icons/search_2.svg') }}" alt="">
                 </button>
-                <div class="td_header_search_wrap">
-                  <form action="#" class="td_header_search">
-                    <input type="text" class="td_header_search_input" placeholder="Search For Anything">
-                    <button class="td_header_search_btn td_center">
-             <img src="{{ asset('assets/img/icons/search_2.svg') }}" alt="">
+              </form>
+            </div>
+          </div>
 
+          {{-- TOP-RIGHT Auth controls (compact) --}}
+          @guest
+            <div class="d-inline-flex align-items-center gap-2 ms-2">
+              <a href="{{ route('auth.show','login') }}" class="td_btn td_style_1 td_medium">
+                <span class="td_btn_in td_white_color td_heading_bg"><span>Login</span></span>
+              </a>
+              <a href="{{ route('auth.show','register') }}" class="td_btn td_style_1 td_medium">
+                <span class="td_btn_in td_white_color td_accent_bg"><span>Register</span></span>
+              </a>
+            </div>
+          @endguest
 
+          @auth
+            <div class="position-relative ms-2">
+              <button class="td_circle_btn td_center" type="button" aria-label="Profile">
+                <img src="{{ asset('assets/img/icons/user.svg') }}" alt="User">
+              </button>
+              <div class="td_header_search_wrap" style="right:0;left:auto;">
+                <div class="p-3 td_white_bg td_radius_10 td_shadow" style="min-width:220px">
+                  <div class="td_mb_10 td_medium">{{ Auth::user()->name }}</div>
+                  <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="td_btn td_style_1 td_medium w-100">
+                      <span class="td_btn_in td_white_color td_accent_bg">
+                        <span>Logout</span>
+                      </span>
                     </button>
                   </form>
                 </div>
               </div>
-              <button class="td_hamburger_btn"></button>
             </div>
-          </div>
+          @endauth
+
+          <button class="td_hamburger_btn"></button>
         </div>
       </div>
-    </header>
+    </div>
+  </div>
+</header>
+
+
     <div class="td_side_header">
       <button class="td_close"></button>
       <div class="td_side_header_overlay"></div>
